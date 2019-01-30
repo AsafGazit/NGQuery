@@ -5,7 +5,7 @@ NGQuery search for best matches, defined by the search term, over N-gram transfr
 NGQuery takes N value lists, corresponding to each N-gram part in the N-gram transfromed text dataframe.
 NGQuery return the "best match" (highest score or parts in lists provided) for each of the documents in the dataframe.
 
-### "Boosting" weak rules
+### "Boosting" weak search rules
 Each of the value lists alone, applied on the correstponding NG-part, cannot be a strong indicator for the search-term in any N-gram.
 Applying each of the rules by themselves by N simple queries and aggregating the results allowing to search for the highest scoring N-gram in each text document.
 This differs from applying a single query with multiple AND clauses as it does not enforce a strong logical AND rule. To replace that, a flexable aggregation of the simplified results allow a more general "desired" term, thus theoretically allowing for typos or OCR errors.

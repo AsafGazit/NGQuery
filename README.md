@@ -44,22 +44,22 @@ self.ng1values, self.ng2values, self.ng3values, self.ng4values, self.ng5values, 
 ngNvalues are in python list type and are case sensitive.
 
 ### Query execution:
--exec_queries() : performs queries
+- exec_queries() : performs queries
 Responses of queries are stored in class attributes, respectively:
 self.ng1res,self.ng2res,self.ng3res,self.ng4res,self.ng5res,self.ng6res
 ngNres are pySpark dataframes.
 
--rate_values() : ranks records according to the responses.
+- rate_values() : ranks records according to the responses.
 Rank all N-grams according to the responses. 
 Enables:
 self.allcounts : pySpark dataframe, union of all the responses (ID), counted.
 self.top_result_value : pySpark dataframe, top N-gram per document.
 
 ### Saving and plotting results :
--save_results_CSV (filename) : saves [self.top_result_value] to a local filename.CSV.
--plot_SearchTermValues(savename=False) : plots the search term values amounts, per ng-part, and the responses for each term values, per file (mean anount and standard deviation shown). 
+- save_results_CSV (filename) : saves [self.top_result_value] to a local filename.CSV.
+- plot_SearchTermValues(savename=False) : plots the search term values amounts, per ng-part, and the responses for each term values, per file (mean anount and standard deviation shown). 
 Save plots to savename (must include .format) to save.
--plot_SearchResultsValues(savename=False) : plots the distribution of N-gram scores, per file (mean anount and standard deviation shown) and the suggested term scores.
+- plot_SearchResultsValues(savename=False) : plots the distribution of N-gram scores, per file (mean anount and standard deviation shown) and the suggested term scores.
 Save plots to savename (must include .format) to save.
 
 

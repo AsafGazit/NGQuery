@@ -1,5 +1,5 @@
 # NGQuery 
-## Search-term query over N-gram PySpark dataframe (of multiple text files).
+## Search-term query over N-gram PySpark dataframe (of multiple text files)
 
 NGQuery search for best matches, defined by the search term, over N-gram transfromed documents dataframe.
 NGQuery takes N value lists, corresponding to each N-gram part in the N-gram transfromed text dataframe.

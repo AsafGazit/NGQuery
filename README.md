@@ -17,13 +17,17 @@ It compares each column in the N-gram dataframe to a wide array of desired value
 
 NGQuery allows examining the results of your query over the documents in the PySpark dataframe using embedded plotting functions:
 - Examine the values and responses for each ng-part:
+
 ![#plot_SearchTermValues function](https://github.com/AsafGazit/NGQuery/blob/master/img/plot_SearchTermValues.jpg)
+
 The plot shows a query looking for a term including a date. The query columns 'ng2' and 'ng3' contain values mostly describing the date name while 'ng4','ng5' and 'ng6' values mostly describe date-associated values.
 The columns capturing the term name ('ng2', 'ng3') in the plot shows that those terms narrows the search term and in fact makes it more term-specific. 
 The date columns ('ng4','ng5','ng6') mostly tried to have the relevant values in corresponding values.
 
 - Examine the N-gram distribution over the NGQuery and suggestion scores:
+
 ![#plot_SearchResultsValues function](https://github.com/AsafGazit/NGQuery/blob/master/img/plot_SearchResultsValues.jpg)
+
 The plot shows that the query managed to locate a few "perfect sixes" phrases which match the search values perfectly. 
 The plot also shows that a few 3,4,5's were picked as suggested values. This suggest either that the search term values needs refining or another NGQuery, using a different associative pattern, should be designed to capture those instances.
 

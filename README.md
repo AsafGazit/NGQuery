@@ -10,7 +10,7 @@ Each of the value lists alone, applied on the correstponding NG-part, cannot be 
 Applying each of the rules by themselves by N simple queries and aggregating the results allowing to search for the highest scoring N-gram in each text document.
 This differs from applying a single query with multiple AND clauses as it does not enforce a strong logical AND rule. To replace that, a flexable aggregation of the simplified results allow a more general "desired" term, thus theoretically allowing for typos or OCR errors.
 
-![#NGQuery diagram](https://github.com/AsafGazit/NGQuery/blob/master/img/NGQuery.PNG)
+![#NGQuery diagram](https://github.com/AsafGazit/NGQuery/blob/master/img/NGQuery.png)
 
 NGQuery operates over text files (documents) transformed to N-grams in a PySpark dataframe. The transformation, of documents to N-grams features, is detailed here.
 It compares each column in the N-gram dataframe to a wide array of desired values for that columns. This simple query is easy to configure by defining a list of desired values for a certain N-gram part.

@@ -34,7 +34,7 @@ Therefore:
         This suggest:
             field F: values between 1 and 40 (numbered list index) or ["Original", "original","a","A","an","An"]
 
-Putting it all together is a query:
+Putting it all together in a query:
 'field F' will be followed by the date name pattern and the the date declared, or:    
     NGQuery(ref to Pyspark DF ,field F,field D,field E,field A,field B,field C)
 

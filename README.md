@@ -63,8 +63,9 @@ Save plots to savename (must include .format) to save.
 - plot_SearchResultsValues(savename=False) : plots the distribution of N-gram scores, per file (mean anount and standard deviation shown) and the suggested term scores.
 Save plots to savename (must include .format) to save.
 
-Example:
-Transforming documents to PySpark N-grams form dataframe:
+## Example:
+### Transforming documents to PySpark N-grams form dataframe:
+
 [Link to source](https://github.com/AsafGazit/NGQuery/blob/master/src/DOCtoPySparkDF.py "Link to source.")
 
 - This example includes setting up local PySpark instance and SQLcontext, however, PySpark should be running in the background.
@@ -126,11 +127,11 @@ ngramDF = ngramDF.select("input","ID","ngrams", ngcol1_udf("ngrams").alias(ngcol
 # save dataframe as pickle
 ngramDF.toPandas().to_pickle('ngramDF.pkl')
 ```
-Applying NGQuery:
+### Applying NGQuery:
+
 [Link to source](https://github.com/AsafGazit/NGQuery/blob/master/src/NGQueryExample.py "Link to source.")
 
 Looking for a term as an "Issue date" :
-
 Looking for a date suggests a few adjecent fields that are indicative of a date.
 For that purpose: 
 - isinDayofmonth includes numbers between 1 and 31.

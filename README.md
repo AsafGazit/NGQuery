@@ -35,6 +35,7 @@ The plot also shows that a few 3,4,5's were picked as suggested values. This sug
 ### Notes: 
 - NGQuery currently deployed over N-grams of length 6.
 - Prerequesits: PySpark, pandas, numpy, matplotlib.
+- [Link to source](https://github.com/AsafGazit/NGQuery/blob/master/src/NGQuery.py "Link to source.")
 
 ### Init:
 NGQuery(PySparkNgramsDataframe,[values for ng part 1],[values2],[values3],[values4],[values5],[values6])
@@ -62,12 +63,119 @@ Save plots to savename (must include .format) to save.
 - plot_SearchResultsValues(savename=False) : plots the distribution of N-gram scores, per file (mean anount and standard deviation shown) and the suggested term scores.
 Save plots to savename (must include .format) to save.
 
-
-TBD
-
 Example:
-
 Transforming documents to PySpark N-grams form dataframe:
+[Link to source](https://github.com/AsafGazit/NGQuery/blob/master/src/DOCtoPySparkDF.py "Link to source.")
 
+- This example includes setting up local PySpark instance and SQLcontext, however, PySpark should be running in the background.
+- This example also saves the dataframe locally in Pandas' pickle format. This step is not mandatory and NGQuery can run directly on the resulted PySpark dataframe. However, PySpark lazy execution suggests that this transformation will be applied as many times as a query will be executed without making the dataframe values available.
+
+```python
+# function to clean the string tokens
+def clean_str(x):
+  punc='!"#$%�&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+  for ch in punc:
+    x = x.replace(ch, '')
+  return x.strip()
+
+# load all text files in folder txt
+
+# define Row to include all txt in file
+row = Row("txt")
+loadedtxtclean = sc.textFile('txt\\*').flatMap(lambda line: line.split(" ")).filter(bool).map(clean_str).map(row).toDF(["txt"])
+loadedtxtclean=loadedtxtclean.withColumn("input", input_file_name())
+documents=loadedtxtclean.groupBy("input").agg(collect_list("txt").alias("txt"))
+
+# create NGRAM df
+ngram = NGram(n=6, inputCol="txt", outputCol="ngrams")
+ngramcoladdedDataFrame = ngram.transform(documents)
+ngramDF = ngramcoladdedDataFrame.select("input",explode("ngrams").alias("ngrams"))
+ngramDF = ngramDF.withColumn("ID", monotonically_increasing_id())
+
+# make all ngfunctions
+# functions splits N-gram to columns in DF
+ngcolnames = ['ng1', 'ng2', 'ng3', 'ng4', 'ng5', 'ng6']
+
+def ngcol1(s):
+    return s.split(" ")[0]
+def ngcol2(s):
+    return s.split(" ")[1]
+def ngcol3(s):
+    return s.split(" ")[2]
+def ngcol4(s):
+    return s.split(" ")[3]
+def ngcol5(s):
+    return s.split(" ")[4]
+def ngcol6(s):
+    return s.split(" ")[5]
+
+ngcol1_udf = udf(ngcol1, StringType())
+ngcol2_udf = udf(ngcol2, StringType())
+ngcol3_udf = udf(ngcol3, StringType())
+ngcol4_udf = udf(ngcol4, StringType())
+ngcol5_udf = udf(ngcol5, StringType())
+ngcol6_udf = udf(ngcol6, StringType())
+
+ngramDF = ngramDF.select("input","ID","ngrams", ngcol1_udf("ngrams").alias(ngcolnames[0]),\
+                         ngcol2_udf("ngrams").alias(ngcolnames[1]),\
+                         ngcol3_udf("ngrams").alias(ngcolnames[2]),\
+                         ngcol4_udf("ngrams").alias(ngcolnames[3]),\
+                         ngcol5_udf("ngrams").alias(ngcolnames[4]),\
+                         ngcol6_udf("ngrams").alias(ngcolnames[5]))
+
+# save dataframe as pickle
+ngramDF.toPandas().to_pickle('ngramDF.pkl')
+```
 Applying NGQuery:
+[Link to source](https://github.com/AsafGazit/NGQuery/blob/master/src/NGQueryExample.py "Link to source.")
 
+Looking for a term as an "Issue date" :
+
+Looking for a date suggests a few adjecent fields that are indicative of a date.
+For that purpose: 
+- isinDayofmonth includes numbers between 1 and 31.
+- isinYears indludes years between 1950 and 2050.
+- isinMonthsnumeric includes numbers 1 to 12.
+- isinMonthsnames includes month names.
+
+To make the date term specific, we can define a few key words that the date pattern follows. In this case - "Issue date" or "Settlement date".
+
+Therefore, date pattern is defined by: 
+- field A: values are either isinDayofmonth or isinMonthsnames.
+- field B: values are either isinDayofmonth or isinMonthsnames.
+ (field 1 and 2 are the same to account for both date dypes)
+- field C: values are isinYears.
+        
+The date name pattern is defined by:
+- field D: ["Issue","issue","Settlement","settlement"]
+- field E: ["Date","date"]
+
+It might be suggested that the date will be clearly highlighted (directly referenced or included in a numbered list). This suggest:
+- field F: values between 1 and 40 (numbered list index) or ["Original", "original","a","A","an","An"]
+
+Putting it all together in a query:
+'field F' will be followed by the date name pattern and the the date declared, or:    
+    NGQuery(ref to Pyspark DF ,field F,field D,field E,field A,field B,field C)
+
+```python
+# shortcut arrays
+isinAccountnumber = np.arange(1,40).astype(str).tolist()+["Original", "original","a","A","an","An"]
+isinDayofmonth = np.arange(32).astype(str).tolist()
+isinYears = np.arange(1950,2050).astype(str).tolist()
+isinMonthsnumeric = np.arange(13).astype(str).tolist()
+isinMonthsnames = ["January","February","March","April","May","June","July"\
+                   ,"August","September","October","November","December"]
+
+## defining the query
+NGQuery1= NGQuery(loadedngram,isinAccountnumber,["Issue","issue","Settlement","settlement"],["Date","date"],isinDayofmonth+isinMonthsnames,isinMonthsnames+isinDayofmonth,isinYears)
+
+## running the query
+NGQuery1.exec_queries()
+NGQuery1.rate_values()
+
+## save and visualise
+NGQuery1.save_results_CSV("NGQuery1results")
+NGQuery1.top_result_value.show()
+NGQuery1.plot_SearchTermValues("plot_SearchTermValues.jpg")
+NGQuery1.plot_SearchResultsValues("plot_SearchResultsValues.jpg")
+```

@@ -136,7 +136,7 @@ Looking for a term as an "Issue date" :
 Looking for a date suggests a few adjecent fields that are indicative of a date.
 For that purpose: 
 - isinDayofmonth includes numbers between 1 and 31.
-- isinYears indludes years between 1950 and 2050.
+- isinYears includes years between 1950 and 2050.
 - isinMonthsnumeric includes numbers 1 to 12.
 - isinMonthsnames includes month names.
 

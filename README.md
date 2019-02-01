@@ -3,7 +3,7 @@
 
 NGQuery search for best matches, defined by the search term, over N-gram transformed documents dataframe.
 NGQuery takes N value lists, corresponding to each N-gram part in the N-gram transformed text dataframe.
-NGQuery return the "best match" (highest score or parts in lists provided) for each of the documents in the dataframe.
+NGQuery return the "best match" (highest score) for each of the documents in the dataframe.
 
 ### "Boosting" weak search rules
 Each of the value lists alone, applied on the corresponding NG-part, cannot be a strong indicator for the search-term in any N-gram.
@@ -12,7 +12,8 @@ This differs from applying a single query with multiple AND clauses as it does n
 
 ![#NGQuery diagram](https://github.com/AsafGazit/NGQuery/blob/master/img/NGQuery.png)
 
-NGQuery operates over text files (documents) transformed to N-grams in a PySpark dataframe. The transformation, of documents to N-grams features, is detailed here.
+NGQuery operates over text files (documents) transformed to N-grams in a PySpark dataframe. The transformation, of documents to N-grams features, [is detailed here.](https://github.com/AsafGazit/NGQuery/blob/master/src/DOCtoPySparkDF.py "is detailed here.")
+
 It compares each column in the N-gram dataframe to a wide array of desired values for that columns. This simple query is easy to configure by defining a list of desired values for a certain N-gram part.
 
 NGQuery allows examining the results of your query over the documents in the PySpark dataframe using embedded plotting functions:

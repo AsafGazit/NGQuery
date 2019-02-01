@@ -145,7 +145,7 @@ To make the date term specific, we can define a few key words that the date patt
 Therefore, date pattern is defined by: 
 - field A: values are either isinDayofmonth or isinMonthsnames.
 - field B: values are either isinDayofmonth or isinMonthsnames.
- (field 1 and 2 are the same to account for both date dypes)
+ (field A and B are the same to account for both date types)
 - field C: values are isinYears.
         
 The date name pattern is defined by:
